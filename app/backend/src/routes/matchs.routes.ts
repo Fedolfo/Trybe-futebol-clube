@@ -1,4 +1,5 @@
 import * as express from 'express';
+import { validateTeam } from '../middlewares/validate.match';
 import validateJWT from '../auth/validateJWT';
 import { MatchController } from '../controllers';
 import CommonRoutesConfig from './common.routes.config';
@@ -15,10 +16,13 @@ class MatchRoutes extends CommonRoutesConfig {
 
     this.app
       .route('/matchs')
-      .post(MatchController.createMatch);
+      .post(
+        validateTeam,
+        MatchController.createMatch,
+      );
 
     this.app
-      .route('/matchs/:id/finished')
+      .route('/matchs/:id/finish')
       .patch(
         validateJWT,
         MatchController.matchInsertedProgress,
