@@ -10,7 +10,7 @@ class User extends Model {
 
   public email: string;
 
-  public password: number;
+  public password: string;
 }
 
 User.init({

@@ -1,11 +1,13 @@
 import * as express from 'express';
+import * as bodyparser from 'body-parser';
+// import UserController from './database/controllers/UserController';
 
 class App {
   public app: express.Express;
   // ...
 
   constructor() {
-    this.app = express()
+    this.app = express();
     this.config();
     // ...
   }
@@ -19,12 +21,13 @@ class App {
     };
 
     this.app.use(accessControl);
-    // ...
+    this.app.use(bodyparser.json());
+    // this.app.get('users/email', new UserController().FindOneUser);
   }
 
   // ...
   public start(PORT: string | number):void {
-    this.app.listen(PORT, () => console.log('ouvindo porta 3001!'))
+    this.app.listen(PORT, () => console.log('ouvindo porta 3001!'));
   }
 }
 
