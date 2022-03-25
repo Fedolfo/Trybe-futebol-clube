@@ -10,23 +10,16 @@ class MatchRoutes extends CommonRoutesConfig {
   }
 
   configureRoutes(): express.Application {
-    this.app
-      .route('/matchs')
-      .get(MatchController.getMatchs);
+    this.app.route('/matchs').get(MatchController.getMatchs);
 
-    this.app
-      .route('/matchs')
-      .post(
-        validateTeam,
-        MatchController.createMatch,
-      );
+    this.app.route('/matchs').post(validateTeam, MatchController.createMatch);
 
-    this.app
-      .route('/matchs/:id/finish')
-      .patch(
-        validateJWT,
-        MatchController.matchInsertedProgress,
-      );
+    this.app.route('/matchs/:id').patch(MatchController.updateGoalsInMatch);
+
+    this.app.route('/matchs/:id/finish').patch(
+      validateJWT,
+      MatchController.matchInsertedProgress,
+    );
 
     return this.app;
   }
