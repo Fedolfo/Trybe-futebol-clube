@@ -1,4 +1,4 @@
-import IMatchs from '../interfaces/IMatchs';
+import { IMatchsDTO, IMatchBody } from '../interfaces/IMatchs';
 import Clubs from '../database/models/Club';
 import Matchs from '../database/models/Match';
 
@@ -15,13 +15,21 @@ class MatchService {
           attributes: ['clubName'],
         },
       ],
-    }) as unknown as IMatchs[];
+    }) as unknown as IMatchsDTO[];
 
     if (inProgress) {
       return matchs.filter((match) => String(match.inProgress) === inProgress);
     }
 
     return matchs;
+  }
+
+  static async createMatch(match: IMatchBody) {
+    return Matchs.create(match);
+  }
+
+  static async matchInsertedProgress(id: number) {
+    return Matchs.update({ inProgress: false }, { where: { id } });
   }
 }
 
