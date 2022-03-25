@@ -1,13 +1,11 @@
-// import User from '../models/user';
-// import UserInterface from './UsersInterfaces';
+import User from '../models/user';
 
-//   const FindOne = async (email: string):Promise<UserInterface> {
-//     const dbEmail = await User.findOne({ where: { email } });
-//     if (!dbEmail) {
-//       return null as unknown as UserInterface;
-//     }
-//     return dbEmail;
-//   }
-// }
+const FindOne = async (email: string) => {
+  const dbEmail = await User.findOne({ where: { email } });
+  if (!dbEmail) {
+    return null;
+  }
+  return dbEmail;
+};
 
-// export { FindOne };
+export default FindOne;

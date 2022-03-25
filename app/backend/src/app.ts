@@ -1,6 +1,6 @@
 import * as express from 'express';
 import * as bodyparser from 'body-parser';
-// import UserController from './database/controllers/UserController';
+import FindOneUser from './database/controllers/UserController';
 
 class App {
   public app: express.Express;
@@ -22,7 +22,7 @@ class App {
 
     this.app.use(accessControl);
     this.app.use(bodyparser.json());
-    // this.app.get('users/email', new UserController().FindOneUser);
+    this.app.get('/users/email', FindOneUser);
   }
 
   // ...
