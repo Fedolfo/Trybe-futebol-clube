@@ -35,8 +35,8 @@ class App {
 
   routesConfig() {
     this.routes.push(new LoginRoutes(this.app));
-    this.routes.push(new ClubRoutes(this.app));
     this.routes.push(new MatchRoutes(this.app));
+    this.routes.push(new ClubRoutes(this.app));
   }
 
   public start(PORT: string | number):void {
