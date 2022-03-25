@@ -14,8 +14,8 @@ class LoginController {
   }
 
   static async getUser(_req: Request, res: Response) {
-    const { code, data } = await LoginService.getUser();
-    res.status(code).json(data);
+    const user = await LoginService.getUser();
+    res.status(200).json(user);
   }
 }
 
