@@ -3,14 +3,14 @@ import { ClubService } from '../services';
 
 class ClubsController {
   static async getClubs(_req: Request, res: Response) {
-    const { code, data } = await ClubService.getClubs();
-    res.status(code).json(data);
+    const clubs = await ClubService.getClubs();
+    res.status(200).json(clubs);
   }
 
   static async getByIdClub(req: Request, res: Response) {
     const { id } = req.params;
-    const { code, data } = await ClubService.getByIdClub(Number(id));
-    res.status(code).json(data);
+    const club = await ClubService.getByIdClub(Number(id));
+    res.status(200).json(club);
   }
 }
 
