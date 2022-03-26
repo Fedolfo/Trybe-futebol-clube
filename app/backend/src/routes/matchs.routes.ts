@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { validateTeam } from '../middlewares/validate.match';
+import validateTeam from '../middlewares/validate.match';
 import validateJWT from '../auth/validateJWT';
 import { MatchController } from '../controllers';
 import CommonRoutesConfig from './common.routes.config';
