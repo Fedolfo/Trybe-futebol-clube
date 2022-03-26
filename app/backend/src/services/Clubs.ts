@@ -1,15 +1,18 @@
+import { IClub } from '../interfaces/IClub';
 import Clubs from '../database/models/Club';
 
 class ClubService {
-  static async getClubs() {
-    const clubs = await Clubs.findAll();
+  private ClubModel = Clubs;
+
+  async getClubs() {
+    const clubs: IClub[] = await this.ClubModel.findAll();
     return clubs;
   }
 
-  static async getByIdClub(id: number) {
-    const club = await Clubs.findByPk(id);
+  async getByIdClub(id: number) {
+    const club: IClub | null = await this.ClubModel.findByPk(id);
     return club;
   }
 }
 
-export default ClubService;
+export default new ClubService();

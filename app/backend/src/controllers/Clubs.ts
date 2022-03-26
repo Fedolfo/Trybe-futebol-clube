@@ -2,14 +2,16 @@ import { Request, Response } from 'express';
 import { ClubService } from '../services';
 
 class ClubsController {
-  static async getClubs(_req: Request, res: Response) {
-    const clubs = await ClubService.getClubs();
+  private ClubService = ClubService;
+
+  async getClubs(_req: Request, res: Response) {
+    const clubs = await this.ClubService.getClubs();
     res.status(200).json(clubs);
   }
 
-  static async getByIdClub(req: Request, res: Response) {
+  async getByIdClub(req: Request, res: Response) {
     const { id } = req.params;
-    const club = await ClubService.getByIdClub(Number(id));
+    const club = await this.ClubService.getByIdClub(Number(id));
     res.status(200).json(club);
   }
 }
