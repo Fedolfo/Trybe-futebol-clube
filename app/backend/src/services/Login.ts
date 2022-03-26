@@ -1,12 +1,14 @@
-import { IEmailAndPasswordDTO } from '../interfaces/ILogin';
+import { ILoginEmailAndPasswordDTO, Ilogin } from '../interfaces/ILogin';
 import User from '../database/models/User';
 import compare from '../utils/Bcrypt';
 import Token from '../auth/createTokenJWT';
 
 class LoginService {
-  static async getLogin(value: IEmailAndPasswordDTO) {
+  private User = User;
+
+  async getLogin(value: ILoginEmailAndPasswordDTO) {
     const { email, password } = value;
-    const searchUser = await User.findOne({ where: { email } });
+    const searchUser: Ilogin | null = await this.User.findOne({ where: { email } });
 
     if (!searchUser) {
       return { code: 401, message: 'Incorrect email or password' };
@@ -24,10 +26,10 @@ class LoginService {
     return { user: { id, username, role, email }, token };
   }
 
-  static async getUser() {
-    const getUser = await User.findAll();
+  async getUser() {
+    const getUser: Ilogin[] = await this.User.findAll();
     return getUser[0].role;
   }
 }
 
-export default LoginService;
+export default new LoginService();

@@ -2,9 +2,11 @@ import { Request, Response } from 'express';
 import { LoginService } from '../services';
 
 class LoginController {
-  static async getLogin(req: Request, res: Response) {
+  private LoginService = LoginService;
+
+  async getLogin(req: Request, res: Response) {
     const { email, password } = req.body;
-    const login = await LoginService.getLogin({ email, password });
+    const login = await this.LoginService.getLogin({ email, password });
 
     if (login.message) {
       return res.status(login.code).json({ message: login.message });
@@ -13,10 +15,10 @@ class LoginController {
     res.status(200).json(login);
   }
 
-  static async getUser(_req: Request, res: Response) {
-    const user = await LoginService.getUser();
+  async getUser(_req: Request, res: Response) {
+    const user = await this.LoginService.getUser();
     res.status(200).json(user);
   }
 }
 
-export default LoginController;
+export default new LoginController();
