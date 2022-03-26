@@ -16,4 +16,4 @@ class ClubsController {
   }
 }
 
-export default ClubsController;
+export default new ClubsController();
