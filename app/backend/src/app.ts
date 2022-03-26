@@ -4,6 +4,7 @@ import debug from 'debug';
 import CommonRoutesConfig from './routes/common.routes.config';
 import { ClubRoutes, LoginRoutes, MatchRoutes } from './routes';
 import DomainError from './middlewares/domainError';
+import LeaderBoardRoutes from './routes/leaderBoard.routes';
 
 require('express-async-errors');
 
@@ -37,6 +38,7 @@ class App {
     this.routes.push(new LoginRoutes(this.app));
     this.routes.push(new MatchRoutes(this.app));
     this.routes.push(new ClubRoutes(this.app));
+    this.routes.push(new LeaderBoardRoutes(this.app));
   }
 
   public start(PORT: string | number):void {
