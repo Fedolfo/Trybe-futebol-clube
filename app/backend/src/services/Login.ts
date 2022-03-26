@@ -1,10 +1,14 @@
-import { ILoginEmailAndPasswordDTO, Ilogin } from '../interfaces/ILogin';
+import { Ilogin, ILoginEmailAndPasswordDTO } from '../interfaces/ILogin';
 import User from '../database/models/User';
 import compare from '../utils/Bcrypt';
 import Token from '../auth/createTokenJWT';
 
 class LoginService {
   private User = User;
+
+  private compare = compare;
+
+  private createToken = Token.createToken;
 
   async getLogin(value: ILoginEmailAndPasswordDTO) {
     const { email, password } = value;
@@ -14,13 +18,13 @@ class LoginService {
       return { code: 401, message: 'Incorrect email or password' };
     }
 
-    const comparePassword = await compare(password, searchUser.password);
+    const comparePassword = await this.compare(password, searchUser.password);
 
     if (!comparePassword) {
       return { code: 401, message: 'Incorrect email or password' };
     }
 
-    const token = Token.createToken(searchUser.email);
+    const token = this.createToken(searchUser.email);
 
     const { id, username, role } = searchUser;
     return { user: { id, username, role, email }, token };
@@ -32,4 +36,4 @@ class LoginService {
   }
 }
 
-export default new LoginService();
+export default LoginService;

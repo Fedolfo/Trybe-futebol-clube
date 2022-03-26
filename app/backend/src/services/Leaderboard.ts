@@ -1,7 +1,7 @@
 import { ILeaderBoadDTO } from '../interfaces/ILeaderBoad';
 
-class Leaderboard {
+class LeaderboardService {
   table: ILeaderBoadDTO;
 }
 
-export default new Leaderboard();
+export default new LeaderboardService();

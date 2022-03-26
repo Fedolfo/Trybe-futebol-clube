@@ -2,7 +2,13 @@ import { Request, Response } from 'express';
 import { ClubService } from '../services';
 
 class ClubsController {
-  private ClubService = ClubService;
+  private ClubService: ClubService;
+
+  constructor() {
+    this.ClubService = new ClubService();
+    this.getClubs = this.getClubs.bind(this);
+    this.getByIdClub = this.getByIdClub.bind(this);
+  }
 
   async getClubs(_req: Request, res: Response) {
     const clubs = await this.ClubService.getClubs();
@@ -16,4 +22,4 @@ class ClubsController {
   }
 }
 
-export default new ClubsController();
+export default ClubsController;

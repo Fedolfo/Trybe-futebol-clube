@@ -15,4 +15,4 @@ class ClubService {
   }
 }
 
-export default new ClubService();
+export default ClubService;

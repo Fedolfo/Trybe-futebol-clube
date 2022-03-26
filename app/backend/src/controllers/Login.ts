@@ -1,12 +1,19 @@
 import { Request, Response } from 'express';
+import { ILoginEmailAndPasswordDTO } from '../interfaces/ILogin';
 import { LoginService } from '../services';
 
 class LoginController {
-  private LoginService = LoginService;
+  private LoginService: LoginService;
+
+  constructor() {
+    this.LoginService = new LoginService();
+    this.getLogin = this.getLogin.bind(this);
+    this.getUser = this.getUser.bind(this);
+  }
 
   async getLogin(req: Request, res: Response) {
-    const { email, password } = req.body;
-    const login = await this.LoginService.getLogin({ email, password });
+    const input: ILoginEmailAndPasswordDTO = req.body;
+    const login = await this.LoginService.getLogin(input);
 
     if (login.message) {
       return res.status(login.code).json({ message: login.message });
@@ -21,4 +28,4 @@ class LoginController {
   }
 }
 
-export default new LoginController();
+export default LoginController;

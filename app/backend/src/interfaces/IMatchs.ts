@@ -1,8 +1,10 @@
-interface IIDMatch {
+import { IClub } from './IClub';
+
+interface IIDMatchDTO {
   id: number;
 }
 
-export interface IMatchBody {
+export interface IMatchBodyDTO {
   homeTeam: number;
   homeTeamGoals: number;
   awayTeam: number;
@@ -10,11 +12,7 @@ export interface IMatchBody {
   inProgress: boolean;
 }
 
-export interface IMatchsDTO extends IIDMatch, IMatchBody {
-  homeClub: {
-    clubName: string;
-  }
-  awayClub: {
-    clubName: string;
-  }
+export interface IMatchs extends IIDMatchDTO, IMatchBodyDTO {
+  homeClub: IClub
+  awayClub: IClub
 }
