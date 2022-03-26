@@ -1,27 +1,32 @@
-import * as express from 'express';
-import validateTeam from '../middlewares/validate.match';
+import ValidateTeam from '../middlewares/validate.match';
 import validateJWT from '../auth/validateJWT';
 import { MatchController } from '../controllers';
 import CommonRoutesConfig from './common.routes.config';
 
 class MatchRoutes extends CommonRoutesConfig {
-  constructor(app: express.Application) {
-    super(app, 'MatchRoutes');
+  private MatchController: MatchController;
+
+  private ValidateTeam: ValidateTeam;
+
+  constructor() {
+    super();
+    this.MatchController = new MatchController();
+    this.ValidateTeam = new ValidateTeam();
+    this.configureRoutes();
   }
 
-  configureRoutes(): express.Application {
-    this.app.route('/matchs').get(MatchController.getMatchs);
+  configureRoutes() {
+    this.router.get('/matchs', this.MatchController.getMatchs);
 
-    this.app.route('/matchs').post(validateTeam, MatchController.createMatch);
+    this.router.post('/matchs', this.ValidateTeam.validate, this.MatchController.createMatch);
 
-    this.app.route('/matchs/:id').patch(MatchController.updateGoalsInMatch);
+    this.router.patch('/matchs/:id', this.MatchController.updateGoalsInMatch);
 
-    this.app.route('/matchs/:id/finish').patch(
+    this.router.patch(
+      '/matchs/:id/finish',
       validateJWT,
-      MatchController.matchInsertedProgress,
+      this.MatchController.matchInsertedProgress,
     );
-
-    return this.app;
   }
 }
 
