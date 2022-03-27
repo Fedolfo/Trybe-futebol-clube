@@ -13,17 +13,11 @@ export interface ILeaderBoadDTO {
   efficiency: number;
 }
 
-// export interface IMatchScore {
-//   goalsFavor: number;
-//   goalsOwn: number;
-// }
-
-export interface IClubMatchScore {
+export interface IMatchScore {
   goalsFavor: number;
   goalsOwn: number;
-  matchs: IClubMatchScore[];
 }
 
-export interface IClubMatchHomeScore extends IClub{
-  homeMatchs: IClubMatchScore[];
+export interface IClubMatchScore extends IClub {
+  matchs: IMatchScore[];
 }
