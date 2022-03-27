@@ -1,5 +1,5 @@
 import { ILeaderBoadDTO,
-  IClubMatchScore, IClubMatchHomeScore } from '../interfaces/ILeaderBoad';
+  IMatchScore, IClubMatchScore } from '../interfaces/ILeaderBoad';
 import Clubs from '../database/models/Club';
 import Matchs from '../database/models/Match';
 
@@ -8,7 +8,7 @@ class LeaderboardService {
 
   private Matchs = Matchs;
 
-  private static countPoints(match: IClubMatchScore[]) {
+  private static countPoints(match: IMatchScore[]) {
     return match.reduce((prev, curr) => {
       if (curr.goalsFavor > curr.goalsOwn) {
         return prev + 3;
@@ -20,7 +20,7 @@ class LeaderboardService {
     }, 0);
   }
 
-  private static countVictories(match: IClubMatchScore[]) {
+  private static countVictories(match: IMatchScore[]) {
     return match.reduce((prev, curr) => {
       if (curr.goalsFavor > curr.goalsOwn) {
         return prev + 1;
@@ -29,7 +29,7 @@ class LeaderboardService {
     }, 0);
   }
 
-  private static countDraws(match: IClubMatchScore[]) {
+  private static countDraws(match: IMatchScore[]) {
     return match.reduce((prev, curr) => {
       if (curr.goalsFavor === curr.goalsOwn) {
         return prev + 1;
@@ -38,7 +38,7 @@ class LeaderboardService {
     }, 0);
   }
 
-  private static countLosses(match: IClubMatchScore[]) {
+  private static countLosses(match: IMatchScore[]) {
     return match.reduce((prev, curr) => {
       if (curr.goalsFavor < curr.goalsOwn) {
         return prev + 1;
@@ -47,49 +47,54 @@ class LeaderboardService {
     }, 0);
   }
 
-  private static countGoalsFavor(match: IClubMatchScore[]) {
+  private static countGoalsFavor(match: IMatchScore[]) {
     return match.reduce((prev, curr) => prev + curr.goalsFavor, 0);
   }
 
-  private static countGoalsOwn(match: IClubMatchScore[]) {
+  private static countGoalsOwn(match: IMatchScore[]) {
     return match.reduce((prev, curr) => prev + curr.goalsOwn, 0);
   }
 
-  private static countGoalsBalance(match: IClubMatchScore[]) {
+  private static countGoalsBalance(match: IMatchScore[]) {
     return match.reduce((prev, curr) => prev + (curr.goalsFavor - curr.goalsOwn), 0);
   }
 
   private static sortLeaderBoard(leaderBoard: ILeaderBoadDTO[]) {
     return leaderBoard.sort((a, b) => {
-      if (a.totalPoints === b.totalPoints) {
-        return b.totalGames - a.totalGames;
-      }
-      return b.totalPoints - a.totalPoints;
+      if (a.totalPoints > b.totalPoints) return -1;
+      if (a.totalPoints < b.totalPoints) return 1;
+      if (a.goalsBalance > b.goalsBalance) return -1;
+      if (a.goalsBalance < b.goalsBalance) return 1;
+      if (a.goalsFavor > b.goalsFavor) return -1;
+      if (a.goalsFavor < b.goalsFavor) return 1;
+      if (a.goalsOwn > b.goalsOwn) return -1;
+      if (a.goalsOwn < b.goalsOwn) return 1;
+      return 0;
     });
   }
 
-  private static async generateLeaderBoard(clubs: IClubMatchScore[], name: string) {
-    const leaderBoard = clubs.map(({ matchs }) => {
-      const clubHistory = {
-        name,
+  private static generateLeaderBoard(clubs: IClubMatchScore[]) {
+    const leaderBoard = clubs.map(({ matchs, clubName }) => {
+      const clubHistory: ILeaderBoadDTO = {
+        name: clubName,
         totalPoints: this.countPoints(matchs),
         totalGames: matchs.length,
-        totalVictores: this.countVictories(matchs),
+        totalVictories: this.countVictories(matchs),
         totalDraws: this.countDraws(matchs),
         totalLosses: this.countLosses(matchs),
         goalsFavor: this.countGoalsFavor(matchs),
         goalsOwn: this.countGoalsOwn(matchs),
         goalsBalance: this.countGoalsBalance(matchs),
         efficiency: 0,
-      } as unknown as ILeaderBoadDTO;
+      };
       clubHistory.efficiency = +((clubHistory.totalPoints / (matchs.length * 3)) * 100).toFixed(2);
       return clubHistory;
     });
-    return (leaderBoard);
+    return this.sortLeaderBoard(leaderBoard);
   }
 
   async getHomeMatchs() {
-    const homeMatchs = (await this.Clubs.findAll({
+    const homeMatchsClub = (await this.Clubs.findAll({
       include: [{
         model: this.Matchs,
         as: 'homeMatchs',
@@ -98,10 +103,15 @@ class LeaderboardService {
         },
         attributes: [['home_team_goals', 'goalsFavor'], ['away_team_goals', 'goalsOwn']],
       }],
-    })) as unknown as IClubMatchHomeScore[];
-    const MatchHomeHistory = homeMatchs.map((home) => LeaderboardService
-      .generateLeaderBoard(home.homeMatchs, home.clubName));
-    return MatchHomeHistory;
+      nest: true,
+    }));
+    const MatchHomeHistory = homeMatchsClub.map((home) => {
+      const clubs = home.get({ plain: true });
+      const matchs = [...clubs.homeMatchs];
+      delete Object.assign(clubs, { matchs }).homeMatchs;
+      return clubs;
+    });
+    return LeaderboardService.generateLeaderBoard(MatchHomeHistory);
   }
 }
 
