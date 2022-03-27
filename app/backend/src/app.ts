@@ -3,7 +3,6 @@ import * as express from 'express';
 import debug from 'debug';
 import { ClubRoutes, LoginRoutes, MatchRoutes } from './routes';
 import DomainError from './middlewares/domainError';
-// import LeaderBoardRoutes from './routes/leaderBoard.routes';
 
 require('express-async-errors');
 

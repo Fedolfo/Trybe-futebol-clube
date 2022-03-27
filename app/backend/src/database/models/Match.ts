@@ -48,12 +48,12 @@ Matchs.init({
 
 Clubs.hasOne(Matchs, {
   foreignKey: 'homeTeam',
-  as: 'club a',
+  as: 'homeMatchs',
 });
 
 Clubs.hasOne(Matchs, {
   foreignKey: 'awayTeam',
-  as: 'club b',
+  as: 'awayMatchs',
 });
 
 Matchs.belongsTo(Clubs, {
