@@ -12,6 +12,7 @@ class LeaderBoardRoutes extends CommonRoutesConfig {
 
   configureRoutes() {
     this.router.get('/leaderboard/home', this.LeaderBoardController.getHomeTeamMatchs);
+    this.router.get('/leaderboard/away', this.LeaderBoardController.getAwayTeamMatchs);
   }
 }
 
