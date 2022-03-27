@@ -46,12 +46,12 @@ Matchs.init({
 
 }, { sequelize: db, timestamps: false, modelName: 'matchs', underscored: true });
 
-Clubs.hasOne(Matchs, {
+Clubs.hasMany(Matchs, {
   foreignKey: 'homeTeam',
   as: 'homeMatchs',
 });
 
-Clubs.hasOne(Matchs, {
+Clubs.hasMany(Matchs, {
   foreignKey: 'awayTeam',
   as: 'awayMatchs',
 });

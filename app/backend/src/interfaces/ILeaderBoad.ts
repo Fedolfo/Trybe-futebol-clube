@@ -1,3 +1,5 @@
+import { IClub } from './IClub';
+
 export interface ILeaderBoadDTO {
   name: string;
   totalPoints: number;
@@ -11,37 +13,17 @@ export interface ILeaderBoadDTO {
   efficiency: number;
 }
 
-export default class GenerateLeaderBoard implements ILeaderBoadDTO {
-  name: string;
+// export interface IMatchScore {
+//   goalsFavor: number;
+//   goalsOwn: number;
+// }
 
-  totalPoints: number;
-
-  totalGames: number;
-
-  totalVictories: number;
-
-  totalDraws: number;
-
-  totalLosses: number;
-
+export interface IClubMatchScore {
   goalsFavor: number;
-
   goalsOwn: number;
+  matchs: IClubMatchScore[];
+}
 
-  goalsBalance: number;
-
-  efficiency: number;
-
-  constructor(name: string, totalGames: number) {
-    this.name = name;
-    this.totalPoints = 0;
-    this.totalGames = totalGames;
-    this.totalVictories = 0;
-    this.totalDraws = 0;
-    this.totalLosses = 0;
-    this.goalsFavor = 0;
-    this.goalsOwn = 0;
-    this.goalsBalance = 0;
-    this.efficiency = 0;
-  }
+export interface IClubMatchHomeScore extends IClub{
+  homeMatchs: IClubMatchScore[];
 }

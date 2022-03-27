@@ -1,7 +1,7 @@
 import * as cors from 'cors';
 import * as express from 'express';
 import debug from 'debug';
-import { ClubRoutes, LoginRoutes, MatchRoutes } from './routes';
+import { ClubRoutes, LeaderBoardRoutes, LoginRoutes, MatchRoutes } from './routes';
 import DomainError from './middlewares/domainError';
 
 require('express-async-errors');
@@ -34,6 +34,7 @@ class App {
     this.app.use(new LoginRoutes().router);
     this.app.use(new MatchRoutes().router);
     this.app.use(new ClubRoutes().router);
+    this.app.use(new LeaderBoardRoutes().router);
   }
 
   public start(PORT: string | number):void {
