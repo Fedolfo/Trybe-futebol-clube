@@ -134,6 +134,40 @@ class LeaderboardService {
     });
     return LeaderboardService.generateLeaderBoard(MatchHomeHistory);
   }
+
+  async getAllMatchs() {
+    const homeMatchsClub = (await this.Clubs.findAll({
+      include: [{
+        model: this.Matchs,
+        as: 'homeMatchs',
+        where: { inProgress: false },
+        attributes: [['home_team_goals', 'goalsFavor'], ['away_team_goals', 'goalsOwn']],
+      },
+      {
+        model: this.Matchs,
+        as: 'awayMatchs',
+        where: { inProgress: false },
+        attributes: [['home_team_goals', 'goalsFavor'], ['away_team_goals', 'goalsOwn']],
+      },
+      ],
+      nest: true,
+    }));
+
+    return homeMatchsClub;
+  }
+
+  async leaderBoardRank() {
+    const getAllMatchs = await this.getAllMatchs();
+    const MatchHomeHistory = getAllMatchs.map((home) => {
+      const clubs = home.get({ plain: true });
+      const matchs = [...clubs.homeMatchs, ...clubs.awayMatchs];
+      delete Object.assign(clubs, { matchs }).homeMatchs;
+      delete Object.assign(clubs, { matchs }).awayMatchs;
+      return clubs;
+    });
+
+    return LeaderboardService.generateLeaderBoard(MatchHomeHistory);
+  }
 }
 
 export default LeaderboardService;
