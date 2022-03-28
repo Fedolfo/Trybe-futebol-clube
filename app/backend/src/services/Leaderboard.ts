@@ -56,7 +56,7 @@ class LeaderboardService {
   }
 
   private static countGoalsBalance(match: IMatchScore[]) {
-    return match.reduce((prev, curr) => prev + (curr.goalsFavor - curr.goalsOwn), 0);
+    return match.reduce((prev, curr) => prev + (curr.goalsOwn - curr.goalsFavor), 0);
   }
 
   private static sortLeaderBoard(leaderBoard: ILeaderBoadDTO[]) {
@@ -103,7 +103,6 @@ class LeaderboardService {
         },
         attributes: [['home_team_goals', 'goalsFavor'], ['away_team_goals', 'goalsOwn']],
       }],
-      nest: true,
     }));
     const MatchHomeHistory = homeMatchsClub.map((home) => {
       const clubs = home.get({ plain: true });
@@ -124,7 +123,6 @@ class LeaderboardService {
         },
         attributes: [['home_team_goals', 'goalsFavor'], ['away_team_goals', 'goalsOwn']],
       }],
-      nest: true,
     }));
     const MatchHomeHistory = homeAwayClub.map((home) => {
       const clubs = home.get({ plain: true });
@@ -150,7 +148,6 @@ class LeaderboardService {
         attributes: [['home_team_goals', 'goalsFavor'], ['away_team_goals', 'goalsOwn']],
       },
       ],
-      nest: true,
     }));
 
     return homeMatchsClub;
