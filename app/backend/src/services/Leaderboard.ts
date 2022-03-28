@@ -56,11 +56,13 @@ class LeaderboardService {
   }
 
   private static countGoalsBalance(match: IMatchScore[]) {
-    return match.reduce((prev, curr) => prev + (curr.goalsOwn - curr.goalsFavor), 0);
+    return match.reduce((prev, curr) => prev + (curr.goalsFavor - curr.goalsOwn), 0);
   }
 
   private static sortLeaderBoard(leaderBoard: ILeaderBoadDTO[]) {
     return leaderBoard.sort((a, b) => {
+      if (a.totalVictories > b.totalVictories) return -1;
+      if (a.totalVictories < b.totalVictories) return 1;
       if (a.totalPoints > b.totalPoints) return -1;
       if (a.totalPoints < b.totalPoints) return 1;
       if (a.goalsBalance > b.goalsBalance) return -1;
@@ -87,6 +89,7 @@ class LeaderboardService {
         goalsBalance: this.countGoalsBalance(matchs),
         efficiency: 0,
       };
+
       clubHistory.efficiency = +((clubHistory.totalPoints / (matchs.length * 3)) * 100).toFixed(2);
       return clubHistory;
     });
