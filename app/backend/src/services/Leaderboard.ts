@@ -59,6 +59,10 @@ class LeaderboardService {
     return match.reduce((prev, curr) => prev + (curr.goalsFavor - curr.goalsOwn), 0);
   }
 
+  private static countGoalsBalanceAway(match: IMatchScore[]) {
+    return match.reduce((prev, curr) => prev + (curr.goalsOwn - curr.goalsFavor), 0);
+  }
+
   private static sortLeaderBoard(leaderBoard: ILeaderBoadDTO[]) {
     return leaderBoard.sort((a, b) => {
       if (a.totalVictories > b.totalVictories) return -1;
@@ -75,7 +79,7 @@ class LeaderboardService {
     });
   }
 
-  private static generateLeaderBoard(clubs: IClubMatchScore[]) {
+  private static generateLeaderBoard(clubs: IClubMatchScore[], homeTeam?: boolean) {
     const leaderBoard = clubs.map(({ matchs, clubName }) => {
       const clubHistory: ILeaderBoadDTO = {
         name: clubName,
@@ -84,9 +88,10 @@ class LeaderboardService {
         totalVictories: this.countVictories(matchs),
         totalDraws: this.countDraws(matchs),
         totalLosses: this.countLosses(matchs),
-        goalsFavor: this.countGoalsFavor(matchs),
-        goalsOwn: this.countGoalsOwn(matchs),
-        goalsBalance: this.countGoalsBalance(matchs),
+        goalsFavor: homeTeam ? this.countGoalsFavor(matchs) : this.countGoalsOwn(matchs),
+        goalsOwn: homeTeam ? this.countGoalsOwn(matchs) : this.countGoalsFavor(matchs),
+        goalsBalance: homeTeam
+          ? this.countGoalsBalance(matchs) : this.countGoalsBalanceAway(matchs),
         efficiency: 0,
       };
 
@@ -96,7 +101,7 @@ class LeaderboardService {
     return this.sortLeaderBoard(leaderBoard);
   }
 
-  async getHomeMatchs() {
+  async getHomeMatchs(homeTeam?: boolean) {
     const homeMatchsClub = (await this.Clubs.findAll({
       include: [{
         model: this.Matchs,
@@ -107,13 +112,14 @@ class LeaderboardService {
         attributes: [['home_team_goals', 'goalsFavor'], ['away_team_goals', 'goalsOwn']],
       }],
     }));
+
     const MatchHomeHistory = homeMatchsClub.map((home) => {
       const clubs = home.get({ plain: true });
       const matchs = [...clubs.homeMatchs];
       delete Object.assign(clubs, { matchs }).homeMatchs;
       return clubs;
     });
-    return LeaderboardService.generateLeaderBoard(MatchHomeHistory);
+    return LeaderboardService.generateLeaderBoard(MatchHomeHistory, homeTeam);
   }
 
   async getAwayMatchs() {

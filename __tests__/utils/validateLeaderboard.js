@@ -60,6 +60,7 @@ const validateLeaderboardBody = async (scoreBoardTableBodyMock, leaderboardTests
 
     const clubId = await page.$eval(body.classification(club.id), (el) => el.innerText);
     const clubName = await page.$eval(body.clubName(club.id), (el) => el.innerText);
+	console.log(clubName)
     const clubPoints = await page.$eval(body.totalPoints(club.id), (el) => el.innerText);
     const clubGames = await page.$eval(body.totalGames(club.id), (el) => el.innerText);
     const clubVictories = await page.$eval(body.totalVictories(club.id), (el) => el.innerText);

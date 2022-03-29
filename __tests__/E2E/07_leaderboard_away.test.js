@@ -42,13 +42,13 @@ describe(getRequirement(31), () => {
   });
 });
 
-describe(getRequirement(32), () => {
+describe.only(getRequirement(32), () => {
   it('Será avaliado que após acrescentar a partida Botafogo 2 X 1 Grêmio e fazer a requisição ao endpoint /leaderboard/away será retonado os campos e valores corretos', async () => {
     const dadosInsert = {
-      homeClub: clubs[3].clubName,
-      awayClub: clubs[8].clubName,
-      homeGoals: twoGoals,
-      awayGoals: oneGoal
+      homeClub: clubs[3].clubName, // corint
+      awayClub: clubs[8].clubName, // internacional
+      homeGoals: twoGoals, // 2 gols
+      awayGoals: oneGoal // 1 gol
     }
     await insertFinished(page, dadosInsert)
     const showMatchsButton = await page.$(header.showMatchsButton);
