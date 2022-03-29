@@ -8,7 +8,7 @@ class LeaderboardService {
 
   private Matchs = Matchs;
 
-  private static countPoints(match: IMatchScore[]) {
+  private static countPointsHome(match: IMatchScore[]) {
     return match.reduce((prev, curr) => {
       if (curr.goalsFavor > curr.goalsOwn) {
         return prev + 3;
@@ -67,7 +67,7 @@ class LeaderboardService {
     return match.reduce((prev, curr) => prev + curr.goalsOwn, 0);
   }
 
-  private static countGoalsBalance(match: IMatchScore[]) {
+  private static countGoalsBalanceHome(match: IMatchScore[]) {
     return match.reduce((prev, curr) => prev + (curr.goalsFavor - curr.goalsOwn), 0);
   }
 
@@ -95,7 +95,7 @@ class LeaderboardService {
     const leaderBoard = clubs.map(({ matchs, clubName }) => {
       const clubHistory: ILeaderBoadDTO = {
         name: clubName,
-        totalPoints: homeTeam ? this.countPoints(matchs) : this.countPointsAway(matchs),
+        totalPoints: homeTeam ? this.countPointsHome(matchs) : this.countPointsAway(matchs),
         totalGames: matchs.length,
         totalVictories: homeTeam ? this.countVictories(matchs) : this.countLosses(matchs),
         totalDraws: this.countDraws(matchs),
@@ -103,7 +103,7 @@ class LeaderboardService {
         goalsFavor: homeTeam ? this.countGoalsFavor(matchs) : this.countGoalsOwn(matchs),
         goalsOwn: homeTeam ? this.countGoalsOwn(matchs) : this.countGoalsFavor(matchs),
         goalsBalance: homeTeam
-          ? this.countGoalsBalance(matchs) : this.countGoalsBalanceAway(matchs),
+          ? this.countGoalsBalanceHome(matchs) : this.countGoalsBalanceAway(matchs),
         efficiency: 0,
       };
 
