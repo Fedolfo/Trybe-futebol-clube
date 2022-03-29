@@ -174,6 +174,27 @@ class LeaderboardService {
     return homeMatchsClub;
   }
 
+  private static generateLeaderBoardRank(clubs: IClubMatchScore[]) {
+    const leaderBoard = clubs.map(({ matchs, clubName }) => {
+      const clubHistory: ILeaderBoadDTO = {
+        name: clubName,
+        totalPoints: this.countPointsHome(matchs) + this.countPointsAway(matchs),
+        totalGames: matchs.length,
+        totalVictories: this.countVictories(matchs) + this.countLosses(matchs),
+        totalDraws: this.countDraws(matchs),
+        totalLosses: this.countLosses(matchs) + this.countVictories(matchs),
+        goalsFavor: this.countGoalsFavor(matchs) + this.countGoalsOwn(matchs),
+        goalsOwn: this.countGoalsOwn(matchs) + this.countGoalsFavor(matchs),
+        goalsBalance: this.countGoalsBalanceHome(matchs) + this.countGoalsBalanceAway(matchs),
+        efficiency: 0,
+      };
+
+      clubHistory.efficiency = +((clubHistory.totalPoints / (matchs.length * 3)) * 100).toFixed(2);
+      return clubHistory;
+    });
+    return this.sortLeaderBoard(leaderBoard);
+  }
+
   async leaderBoardRank() {
     const getAllMatchs = await this.getAllMatchs();
     const MatchHomeHistory = getAllMatchs.map((home) => {
@@ -184,7 +205,7 @@ class LeaderboardService {
       return clubs;
     });
 
-    return LeaderboardService.generateLeaderBoard(MatchHomeHistory);
+    return LeaderboardService.generateLeaderBoardRank(MatchHomeHistory);
   }
 }
 
