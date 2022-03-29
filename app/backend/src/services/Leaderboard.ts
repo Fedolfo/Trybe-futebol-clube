@@ -20,6 +20,18 @@ class LeaderboardService {
     }, 0);
   }
 
+  private static countPointsAway(match: IMatchScore[]) {
+    return match.reduce((prev, curr) => {
+      if (curr.goalsFavor < curr.goalsOwn) {
+        return prev + 3;
+      }
+      if (curr.goalsFavor === curr.goalsOwn) {
+        return prev + 1;
+      }
+      return prev;
+    }, 0);
+  }
+
   private static countVictories(match: IMatchScore[]) {
     return match.reduce((prev, curr) => {
       if (curr.goalsFavor > curr.goalsOwn) {
@@ -83,11 +95,11 @@ class LeaderboardService {
     const leaderBoard = clubs.map(({ matchs, clubName }) => {
       const clubHistory: ILeaderBoadDTO = {
         name: clubName,
-        totalPoints: this.countPoints(matchs),
+        totalPoints: homeTeam ? this.countPoints(matchs) : this.countPointsAway(matchs),
         totalGames: matchs.length,
-        totalVictories: this.countVictories(matchs),
+        totalVictories: homeTeam ? this.countVictories(matchs) : this.countLosses(matchs),
         totalDraws: this.countDraws(matchs),
-        totalLosses: this.countLosses(matchs),
+        totalLosses: homeTeam ? this.countLosses(matchs) : this.countVictories(matchs),
         goalsFavor: homeTeam ? this.countGoalsFavor(matchs) : this.countGoalsOwn(matchs),
         goalsOwn: homeTeam ? this.countGoalsOwn(matchs) : this.countGoalsFavor(matchs),
         goalsBalance: homeTeam
