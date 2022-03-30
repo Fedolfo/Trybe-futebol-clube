@@ -21,7 +21,8 @@ Club.init({
   // ... Outras configs
   underscored: true,
   sequelize: db,
-  modelName: 'clubs',
+  modelName: 'Club',
+  tableName: 'clubs',
   timestamps: false,
 });
 
