@@ -1,11 +1,11 @@
 import User from '../models/user';
 
-const FindOne = async (email: string) => {
-  const dbEmail = await User.findOne({ where: { email } });
-  if (!dbEmail) {
+const getByMail = async (email: string) => {
+  const userBymail = await User.findOne({ where: { email } });
+  if (!userBymail) {
     return null;
   }
-  return dbEmail;
+  return userBymail;
 };
 
-export default FindOne;
+export default getByMail;

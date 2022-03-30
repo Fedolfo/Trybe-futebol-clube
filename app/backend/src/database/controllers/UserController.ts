@@ -1,8 +1,8 @@
-import FindOne from '../services/UserService';
+import getByMail from '../services/UserService';
 
-const FindOneUser = async (email: string) => {
-  const user = await FindOne(email);
+const getUserByMail = async (email: string) => {
+  const user = await getByMail(email);
   return user;
 };
 
-export default FindOneUser;
+export default getUserByMail;
