@@ -1,0 +1,36 @@
+on: [push, pull_request]
+
+jobs:
+  ESLint:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Fetch repository
+      uses: actions/checkout@v2
+
+    - name: Install node
+      uses: actions/setup-node@v1
+
+    - name: Install dependencies
+      run: npm install
+      working-directory: ./backend
+
+    - name: Run ESLint check
+      run: npx eslint .
+      working-directory: ./backend
+
+  Tests:
+    runs-on: ubuntu-latest
+    needs: [ESLint]
+    steps:
+    - name: Fetch repository
+      uses: actions/checkout@v2
+
+    - name: Start containers
+      run: cd app && docker-compose up --build -d
+
+    - name: Run tests
+      run: cd app && docker-compose exec -T backend npm test
+
+    - name: Stop containers
+      if: always()
+      run: cd app && docker-compose down --rmi all --volumes --remove-orphans
