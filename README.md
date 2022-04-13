@@ -39,30 +39,37 @@ No desenvolvimento do TFC, e desenvolvido uma API consumindo um banco de dados, 
 É necessário ter [docker](https://docs.docker.com/get-docker/) e [docker-compose](https://docs.docker.com/compose/install/)
 
 1. Clone o repositório
-  * git clone `[git@github.com:Fedolfo/Trybe-futebol-clube.git](https://github.com/Fedolfo/Trybe-futebol-clube.git)`
+  * git clone `git@github.com:Fedolfo/Trybe-futebol-clube.git`
 
 2. Entre no arquivo
+```bash
   * cd Trybe-futebol-clube
-
+```
 3. Suba os containêrs
+```bash
  * npm run compose:up ou docker-compose up -d --build
-
+```
 4. No momento que subir os container retornara essa messagem no terminal
-
+```bash
   Creating db ... done
   Creating app_backend_1 ... done
   Creating app_frontend_1 ... done
-
+```
 5. Para acessar as aplicação
+```bash
   * front-end: localhost:3000
   * back-end: localhost:3001
-
+```
   Para a realização do login no front-end:
+```bash
   login: admin@admin.com
   senha: secret_admin
-
+```
 6. Para rodar os testes de integração, caso estiver na raiz do projeto
+```bash
   * cd app && docker-compose exec backend npm test
-
+```
 7. Para remover a API
+```bash
  * docker-compose down --rmi local --volumes --remove-orphans
+```
