@@ -12,11 +12,11 @@ jobs:
 
     - name: Install dependencies
       run: npm install
-      working-directory: ./backend
+      working-directory: ./app/backend
 
     - name: Run ESLint check
       run: npx eslint .
-      working-directory: ./backend
+      working-directory: ./app/backend
 
   Tests:
     runs-on: ubuntu-latest
