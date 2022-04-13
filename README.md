@@ -36,7 +36,7 @@ No desenvolvimento do TFC, e desenvolvido uma API consumindo um banco de dados, 
 
 ## Para ser feito a instalação do projeto em sua máquina
 
-É necessário ter [docker](https://docs.docker.com/get-docker/)**v: 20.10.14** e [docker-compose](https://docs.docker.com/compose/install/)**v: 1.29.2**
+É necessário ter [docker](https://docs.docker.com/get-docker/) e [docker-compose](https://docs.docker.com/compose/install/)
 
 1. Clone o repositório
   * git clone `[git@github.com:Fedolfo/Trybe-futebol-clube.git](https://github.com/Fedolfo/Trybe-futebol-clube.git)`
