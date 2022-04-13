@@ -5,7 +5,7 @@
 
 O TFC é um site informativo sobre partidas e classificações de futebol.
 
-No desenvolvimento do TFC, e desenvolvido uma API para que funcione consumindo um banco de dados, utilizando principios SOLID e arquitetura MSC com TypeScript, POO e dockerização(dockerfile, docker-compose). Utilizando modelagem de dados através do Sequelize, onde tem a finalidade de ser consumida por um front-end, já construído pelo time da trybe nesse projeto, a API é responsavel por:
+No desenvolvimento do TFC, e desenvolvido uma API consumindo um banco de dados, utilizando principios SOLID e arquitetura MSC com TypeScript, POO e dockerização(dockerfile, docker-compose). Utilizando modelagem de dados através do Sequelize, onde tem a finalidade de ser consumida por um front-end, já construído pelo time da trybe nesse projeto, a API é responsavel por:
 
 * Criar e manipular dados com MySQL através do Sequelize, armazenando os dados;
 * Autenticação de usuário;
